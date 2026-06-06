@@ -1,0 +1,15 @@
+app/
+models/
+inputs/
+outputs/
+user/
+custom_nodes/
+
+.git/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.tmp

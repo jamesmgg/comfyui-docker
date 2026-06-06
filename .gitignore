@@ -1,0 +1,33 @@
+# Downloaded ComfyUI source tree. The container populates this on first start.
+app/
+
+# Model weights and generated media should not be committed.
+models/**/*
+!models/**/
+!models/**/put_*_here
+!models/**/put_*
+inputs/*
+outputs/*
+
+# Runtime state written by ComfyUI and ComfyUI Manager.
+user/
+
+# Custom nodes are installed and managed at runtime.
+custom_nodes/*
+!custom_nodes/*.example
+
+# Python/editor/runtime noise.
+__pycache__/
+*.py[cod]
+*.pyo
+*.log
+*.tmp
+.venv/
+venv/
+.env
+
+# OS/editor files.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

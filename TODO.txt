@@ -1,0 +1,36 @@
+ComfyUI API access from another Docker container
+
+- If the other container is in the same docker-compose.yml, call ComfyUI by
+  service name:
+
+  http://comfyui:8188
+
+- ComfyUI must listen on all container interfaces:
+
+  python main.py --listen 0.0.0.0 --port 8188
+
+- Example second service environment value:
+
+  COMFYUI_API_URL=http://comfyui:8188
+
+- Test from the second container:
+
+  curl http://comfyui:8188/system_stats
+
+- The host port mapping, such as 8188:8188, is for browser/host access.
+  Container-to-container traffic uses the Docker Compose network and does not
+  require publishing the port.
+
+- If the other container is in a separate Compose project, create and attach a
+  shared external network:
+
+  docker network create comfy-net
+
+  networks:
+    comfy-net:
+      external: true
+
+- Attach both the ComfyUI service and the other container's service to
+  comfy-net. The other service can then use:
+
+  COMFYUI_API_URL=http://comfyui:8188
