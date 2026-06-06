@@ -1,22 +1,23 @@
 services:
-  comfyui:
+  comfyui-gpu0:
     build:
       context: .
     image: comfyui-cuda13:local
-    container_name: comfyui-dev
+    container_name: comfyui-gpu0
     restart: unless-stopped
     ports:
       - "8188:8188"
-    gpus: all
+    gpus:
+      - device_ids: ["0"]
+        capabilities: ["gpu"]
     environment:
-      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_VISIBLE_DEVICES: "0"
+      CUDA_VISIBLE_DEVICES: "0"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
-      COMFYUI_TARBALL_URL: https://github.com/comfyanonymous/ComfyUI/archive/refs/heads/master.tar.gz
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --cuda-device 0,1 --default-device 0 --enable-manager
+      LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --reserve-vram 1.0 --preview-method none --enable-manager --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
-      - ./app:/workspace/ComfyUI
-      - ./custom_nodes:/workspace/ComfyUI/custom_nodes
-      - ./user:/workspace/ComfyUI/user
+      - ./user/gpu0:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
       - ./models/loras:/workspace/ComfyUI/models/loras
       - ./models/controlnet:/workspace/ComfyUI/models/controlnet
@@ -34,7 +35,91 @@ services:
       - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
       - ./models/configs:/workspace/ComfyUI/models/configs
       - ./inputs:/workspace/ComfyUI/input
-      - ./outputs:/workspace/ComfyUI/output
+      - ./outputs/gpu0:/workspace/ComfyUI/output
+      - ./temp/gpu0:/workspace/ComfyUI/temp
+    tty: true
+    stdin_open: true
+    working_dir: /workspace/ComfyUI
+
+  comfyui-gpu1:
+    build:
+      context: .
+    image: comfyui-cuda13:local
+    container_name: comfyui-gpu1
+    restart: unless-stopped
+    ports:
+      - "8189:8189"
+    gpus:
+      - device_ids: ["1"]
+        capabilities: ["gpu"]
+    environment:
+      NVIDIA_VISIBLE_DEVICES: "1"
+      CUDA_VISIBLE_DEVICES: "1"
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8189 --reserve-vram 1.0 --preview-method none --enable-manager --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+    volumes:
+      - ./user/gpu1:/workspace/ComfyUI/user
+      - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
+      - ./models/loras:/workspace/ComfyUI/models/loras
+      - ./models/controlnet:/workspace/ComfyUI/models/controlnet
+      - ./models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
+      - ./models/vae:/workspace/ComfyUI/models/vae
+      - ./models/vae_approx:/workspace/ComfyUI/models/vae_approx
+      - ./models/clip:/workspace/ComfyUI/models/clip
+      - ./models/clip_vision:/workspace/ComfyUI/models/clip_vision
+      - ./models/unet:/workspace/ComfyUI/models/unet
+      - ./models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
+      - ./models/diffusers:/workspace/ComfyUI/models/diffusers
+      - ./models/text_encoders:/workspace/ComfyUI/models/text_encoders
+      - ./models/embeddings:/workspace/ComfyUI/models/embeddings
+      - ./models/style_models:/workspace/ComfyUI/models/style_models
+      - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
+      - ./models/configs:/workspace/ComfyUI/models/configs
+      - ./inputs:/workspace/ComfyUI/input
+      - ./outputs/gpu1:/workspace/ComfyUI/output
+      - ./temp/gpu1:/workspace/ComfyUI/temp
+    tty: true
+    stdin_open: true
+    working_dir: /workspace/ComfyUI
+
+  comfyui-sharded:
+    profiles: ["sharded"]
+    build:
+      context: .
+    image: comfyui-cuda13:local
+    container_name: comfyui-sharded
+    restart: unless-stopped
+    ports:
+      - "8190:8190"
+    gpus: all
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      CUDA_VISIBLE_DEVICES: "0,1"
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8190 --cuda-device 0,1 --default-device 0 --reserve-vram 1.0 --preview-method none --enable-manager --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+    volumes:
+      - ./user/sharded:/workspace/ComfyUI/user
+      - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
+      - ./models/loras:/workspace/ComfyUI/models/loras
+      - ./models/controlnet:/workspace/ComfyUI/models/controlnet
+      - ./models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
+      - ./models/vae:/workspace/ComfyUI/models/vae
+      - ./models/vae_approx:/workspace/ComfyUI/models/vae_approx
+      - ./models/clip:/workspace/ComfyUI/models/clip
+      - ./models/clip_vision:/workspace/ComfyUI/models/clip_vision
+      - ./models/unet:/workspace/ComfyUI/models/unet
+      - ./models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
+      - ./models/diffusers:/workspace/ComfyUI/models/diffusers
+      - ./models/text_encoders:/workspace/ComfyUI/models/text_encoders
+      - ./models/embeddings:/workspace/ComfyUI/models/embeddings
+      - ./models/style_models:/workspace/ComfyUI/models/style_models
+      - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
+      - ./models/configs:/workspace/ComfyUI/models/configs
+      - ./inputs:/workspace/ComfyUI/input
+      - ./outputs/sharded:/workspace/ComfyUI/output
+      - ./temp/sharded:/workspace/ComfyUI/temp
     tty: true
     stdin_open: true
     working_dir: /workspace/ComfyUI
