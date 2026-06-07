@@ -1,0 +1,143 @@
+{
+  "canonical_reference_input": "/mnt/c/users/jaime/documents/projects/comfyui-docker/inputs/reference_input.png",
+  "created_at": "2026-06-06T23:40:23.141967+00:00",
+  "notes": [
+    "Queued stage 1 behind existing ComfyUI work; no queue clear, interrupt, or reordering was performed.",
+    "GGUF support installation and worker restart are deferred until workers are idle/safe to restart."
+  ],
+  "reference_source": "/mnt/c/users/jaime/documents/projects/comfyui-docker/outputs/gpu1/ComfyUI_00001_.png",
+  "run_id": "20260606-184022",
+  "stage1_submissions": [
+    {
+      "accepted": {
+        "node_errors": {},
+        "number": 1393,
+        "prompt_id": "non-wan-smoke-20260606-184022-01"
+      },
+      "assigned_port": 8188,
+      "error": null,
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/01-flux2-dev-fp8mixed",
+      "prompt_file": "01-flux2-dev-fp8mixed.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-01",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.025362+00:00",
+      "workflow": "flux2-dev-fp8mixed"
+    },
+    {
+      "accepted": {
+        "node_errors": {},
+        "number": 1394,
+        "prompt_id": "non-wan-smoke-20260606-184022-02"
+      },
+      "assigned_port": 8188,
+      "error": null,
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/02-qwen-image-fp8",
+      "prompt_file": "02-qwen-image-fp8.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-02",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.042574+00:00",
+      "workflow": "qwen-image-fp8"
+    },
+    {
+      "accepted": null,
+      "assigned_port": 8188,
+      "error": "HTTP Error 400: Bad Request",
+      "error_body": "{\"error\": {\"type\": \"prompt_outputs_failed_validation\", \"message\": \"Prompt outputs failed validation\", \"details\": \"\", \"extra_info\": {}}, \"node_errors\": {\"20\": {\"errors\": [{\"type\": \"value_not_in_list\", \"message\": \"Value not in list\", \"details\": \"lora_name: 'Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors' not in ['Flux_2-Turbo-LoRA_comfyui.safetensors', 'QWEN_EDIT_ACTION_V1.safetensors', 'gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors', 'ltx2.3-transition.safetensors', 'ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors', 'wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors', 'wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors', 'wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors', 'wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors']\", \"extra_info\": {\"input_name\": \"lora_name\", \"input_config\": [[\"Flux_2-Turbo-LoRA_comfyui.safetensors\", \"QWEN_EDIT_ACTION_V1.safetensors\", \"gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors\", \"ltx2.3-transition.safetensors\", \"ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors\", \"wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors\", \"wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors\", \"wan2.2_t2v_lightx2v_4steps_lora_v1.1_high_noise.safetensors\", \"wan2.2_t2v_lightx2v_4steps_lora_v1.1_low_noise.safetensors\"], {}], \"received_value\": \"Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors\"}}], \"dependent_outputs\": [\"11\"], \"class_type\": \"LoraLoaderModelOnly\"}}}",
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/03-qwen-image-edit-2511-lightning-4step",
+      "prompt_file": "03-qwen-image-edit-2511-lightning-4step.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-03",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.082520+00:00",
+      "workflow": "qwen-image-edit-2511-lightning-4step"
+    },
+    {
+      "accepted": null,
+      "assigned_port": 8189,
+      "error": "HTTP Error 400: Bad Request",
+      "error_body": "{\"error\": {\"type\": \"prompt_outputs_failed_validation\", \"message\": \"Prompt outputs failed validation\", \"details\": \"Return type mismatch between linked nodes: images, received_type(MASK) mismatch input_type(IMAGE)\", \"extra_info\": {}}, \"node_errors\": {\"5\": {\"errors\": [{\"type\": \"return_type_mismatch\", \"message\": \"Return type mismatch between linked nodes\", \"details\": \"images, received_type(MASK) mismatch input_type(IMAGE)\", \"extra_info\": {\"input_name\": \"images\", \"input_config\": [\"IMAGE\", {\"tooltip\": \"The images to save.\"}], \"received_type\": \"MASK\", \"linked_node\": [\"4\", 0]}}], \"dependent_outputs\": [\"5\"], \"class_type\": \"SaveImage\"}}}",
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/04-sam31-multiplex-segmentation",
+      "prompt_file": "04-sam31-multiplex-segmentation.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-04",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.094097+00:00",
+      "workflow": "sam31-multiplex-segmentation"
+    },
+    {
+      "accepted": null,
+      "assigned_port": 8189,
+      "error": "HTTP Error 400: Bad Request",
+      "error_body": "{\"error\": {\"type\": \"prompt_outputs_failed_validation\", \"message\": \"Prompt outputs failed validation\", \"details\": \"Required input is missing: format\\nRequired input is missing: codec\", \"extra_info\": {}}, \"node_errors\": {\"1\": {\"errors\": [{\"type\": \"value_not_in_list\", \"message\": \"Value not in list\", \"details\": \"ckpt_name: 'ltx-2.3-22b-distilled-fp8.safetensors' not in ['hidream_o1_image_dev_fp8_scaled.safetensors', 'sam3.1_multiplex_fp16.safetensors', 'stable_audio_3_medium_base.safetensors', 'v1-5-pruned-emaonly-fp16.safetensors']\", \"extra_info\": {\"input_name\": \"ckpt_name\", \"input_config\": [[\"hidream_o1_image_dev_fp8_scaled.safetensors\", \"sam3.1_multiplex_fp16.safetensors\", \"stable_audio_3_medium_base.safetensors\", \"v1-5-pruned-emaonly-fp16.safetensors\"], {\"tooltip\": \"The name of the checkpoint (model) to load.\"}], \"received_value\": \"ltx-2.3-22b-distilled-fp8.safetensors\"}}], \"dependent_outputs\": [\"14\"], \"class_type\": \"CheckpointLoaderSimple\"}, \"2\": {\"errors\": [{\"type\": \"value_not_in_list\", \"message\": \"Value not in list\", \"details\": \"ckpt_name: 'ltx-2.3-22b-distilled-fp8.safetensors' not in ['hidream_o1_image_dev_fp8_scaled.safetensors', 'sam3.1_multiplex_fp16.safetensors', 'stable_audio_3_medium_base.safetensors', 'v1-5-pruned-emaonly-fp16.safetensors']\", \"extra_info\": {\"input_name\": \"ckpt_name\", \"input_config\": [\"COMBO\", {\"multiselect\": false, \"options\": [\"hidream_o1_image_dev_fp8_scaled.safetensors\", \"sam3.1_multiplex_fp16.safetensors\", \"stable_audio_3_medium_base.safetensors\", \"v1-5-pruned-emaonly-fp16.safetensors\"]}], \"received_value\": \"ltx-2.3-22b-distilled-fp8.safetensors\"}}], \"dependent_outputs\": [\"14\"], \"class_type\": \"LTXAVTextEncoderLoader\"}, \"14\": {\"errors\": [{\"type\": \"required_input_missing\", \"message\": \"Required input is missing\", \"details\": \"format\", \"extra_info\": {\"input_name\": \"format\"}}, {\"type\": \"required_input_missing\", \"message\": \"Required input is missing\", \"details\": \"codec\", \"extra_info\": {\"input_name\": \"codec\"}}], \"dependent_outputs\": [\"14\"], \"class_type\": \"SaveVideo\"}}}",
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/05-ltx23-distilled-fp8",
+      "prompt_file": "05-ltx23-distilled-fp8.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-05",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.111181+00:00",
+      "workflow": "ltx23-distilled-fp8"
+    },
+    {
+      "accepted": {
+        "node_errors": {},
+        "number": 38,
+        "prompt_id": "non-wan-smoke-20260606-184022-06"
+      },
+      "assigned_port": 8189,
+      "error": null,
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/06-stable-audio-3-medium-base",
+      "prompt_file": "06-stable-audio-3-medium-base.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-06",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.121275+00:00",
+      "workflow": "stable-audio-3-medium-base"
+    },
+    {
+      "accepted": {
+        "node_errors": {},
+        "number": 1396,
+        "prompt_id": "non-wan-smoke-20260606-184022-07"
+      },
+      "assigned_port": 8188,
+      "error": null,
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/07-sd15-v1-5-pruned",
+      "prompt_file": "07-sd15-v1-5-pruned.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-07",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.130264+00:00",
+      "workflow": "sd15-v1-5-pruned"
+    },
+    {
+      "accepted": {
+        "node_errors": {},
+        "number": 39,
+        "prompt_id": "non-wan-smoke-20260606-184022-08"
+      },
+      "assigned_port": 8189,
+      "error": null,
+      "filename_prefix": "non-wan-smoke/20260606-184022/stage1/08-anima-base-v1",
+      "prompt_file": "08-anima-base-v1.prompt.json",
+      "prompt_id": "non-wan-smoke-20260606-184022-08",
+      "stage": 1,
+      "submitted_at": "2026-06-06T23:40:23.141942+00:00",
+      "workflow": "anima-base-v1"
+    }
+  ],
+  "stage2_remaining_safetensors": [
+    "flux2-dev-turbo-lora",
+    "flux2-klein-base-4b-fp8",
+    "hidream-o1-image-dev",
+    "qwen-image-2512-fp8",
+    "qwen-image-2512-lightning-4step",
+    "qwen-360-diffusion-2512",
+    "qwen-illustration-1",
+    "qwen-image-edit-2511"
+  ],
+  "stage3_gemma_text_encoder_probes": [
+    "ltx23-dev-fp8",
+    "ltx23-distilled-dynamic-lora",
+    "ltx23-transition-lora"
+  ],
+  "stage4_gguf_after_support_install": [
+    "flux2-dev-q4km-gguf",
+    "flux2-klein-9b-q6k-gguf"
+  ],
+  "workflow_source": "/mnt/c/users/jaime/documents/projects/comfyui-docker/reference_workflows/non_wan_models"
+}

@@ -1,0 +1,90 @@
+{
+  "client_id": "non-wan-smoke-campaign",
+  "prompt": {
+    "19": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "KSampler",
+      "inputs": {
+        "cfg": 8,
+        "denoise": 1,
+        "latent_image": [
+          "8",
+          0
+        ],
+        "model": [
+          "19",
+          0
+        ],
+        "negative": [
+          "25",
+          0
+        ],
+        "positive": [
+          "21",
+          0
+        ],
+        "sampler_name": "dpmpp_2m_sde_gpu",
+        "scheduler": "karras",
+        "seed": 1003,
+        "steps": 20
+      }
+    },
+    "21": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "19",
+          1
+        ],
+        "text": "Smoke test image: a small brass robot inspecting a glowing model file on a workbench, crisp detail, readable label \"MODEL OK\", neutral studio lighting."
+      }
+    },
+    "25": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "19",
+          1
+        ],
+        "text": "low quality, blurry, distorted, broken text, artifacts"
+      }
+    },
+    "28": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "non-wan-smoke/20260606-184022/stage1/07-sd15-v1-5-pruned",
+        "images": [
+          "5",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "2",
+          0
+        ],
+        "vae": [
+          "19",
+          2
+        ]
+      }
+    },
+    "8": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "batch_size": 1,
+        "height": 768,
+        "width": 768
+      }
+    }
+  },
+  "prompt_id": "non-wan-smoke-20260606-184022-07"
+}

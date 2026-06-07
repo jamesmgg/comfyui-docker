@@ -1,0 +1,153 @@
+{
+  "client_id": "non-wan-smoke-campaign",
+  "prompt": {
+    "13": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "guider": [
+          "22",
+          0
+        ],
+        "latent_image": [
+          "27",
+          0
+        ],
+        "noise": [
+          "25",
+          0
+        ],
+        "sampler": [
+          "16",
+          0
+        ],
+        "sigmas": [
+          "17",
+          0
+        ]
+      }
+    },
+    "16": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler"
+      }
+    },
+    "17": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "denoise": 1,
+        "model": [
+          "30",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 20
+      }
+    },
+    "22": {
+      "class_type": "BasicGuider",
+      "inputs": {
+        "conditioning": [
+          "26",
+          0
+        ],
+        "model": [
+          "30",
+          0
+        ]
+      }
+    },
+    "25": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 1004
+      }
+    },
+    "26": {
+      "class_type": "FluxGuidance",
+      "inputs": {
+        "conditioning": [
+          "6",
+          0
+        ],
+        "guidance": 4
+      }
+    },
+    "27": {
+      "class_type": "EmptyFlux2LatentImage",
+      "inputs": {
+        "batch_size": 1,
+        "height": 832,
+        "width": 1248
+      }
+    },
+    "30": {
+      "class_type": "ModelSamplingFlux",
+      "inputs": {
+        "base_shift": 0.5,
+        "height": 832,
+        "max_shift": 1.15,
+        "model": [
+          "38",
+          0
+        ],
+        "width": 1248
+      }
+    },
+    "38": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "flux2_dev_fp8mixed.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "39": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "mistral_3_small_flux2_fp8.safetensors",
+        "device": "default",
+        "type": "flux2"
+      }
+    },
+    "40": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "flux2-vae.safetensors"
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "39",
+          0
+        ],
+        "text": "Photorealistic smoke test: a precision-machined badge reading MODEL OK on carbon fiber, shallow depth of field, accurate engraved text"
+      }
+    },
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "13",
+          0
+        ],
+        "vae": [
+          "40",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "non-wan-smoke/20260606-184022/stage1/01-flux2-dev-fp8mixed",
+        "images": [
+          "8",
+          0
+        ]
+      }
+    }
+  },
+  "prompt_id": "non-wan-smoke-20260606-184022-01"
+}

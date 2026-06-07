@@ -1,0 +1,86 @@
+{
+  "2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 1003,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "dpmpp_2m_sde_gpu",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "19",
+        0
+      ],
+      "positive": [
+        "21",
+        0
+      ],
+      "negative": [
+        "25",
+        0
+      ],
+      "latent_image": [
+        "8",
+        0
+      ]
+    }
+  },
+  "5": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "2",
+        0
+      ],
+      "vae": [
+        "19",
+        2
+      ]
+    }
+  },
+  "8": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 768,
+      "height": 768,
+      "batch_size": 1
+    }
+  },
+  "19": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "v1-5-pruned-emaonly-fp16.safetensors"
+    }
+  },
+  "21": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "Smoke test image: a small brass robot inspecting a glowing model file on a workbench, crisp detail, readable label \"MODEL OK\", neutral studio lighting.",
+      "clip": [
+        "19",
+        1
+      ]
+    }
+  },
+  "25": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "low quality, blurry, distorted, broken text, artifacts",
+      "clip": [
+        "19",
+        1
+      ]
+    }
+  },
+  "28": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sd15-v1-5-smoke",
+      "images": [
+        "5",
+        0
+      ]
+    }
+  }
+}

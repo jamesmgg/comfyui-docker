@@ -1,0 +1,178 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "ltx-2.3-22b-distilled-fp8.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "10": {
+    "class_type": "BasicScheduler",
+    "inputs": {
+      "denoise": 1,
+      "model": [
+        "20",
+        0
+      ],
+      "scheduler": "simple",
+      "steps": 20
+    }
+  },
+  "11": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "guider": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "6",
+        0
+      ],
+      "noise": [
+        "8",
+        0
+      ],
+      "sampler": [
+        "9",
+        0
+      ],
+      "sigmas": [
+        "10",
+        0
+      ]
+    }
+  },
+  "12": {
+    "class_type": "VAEDecodeTiled",
+    "inputs": {
+      "overlap": 64,
+      "samples": [
+        "11",
+        0
+      ],
+      "temporal_overlap": 4,
+      "temporal_size": 4096,
+      "tile_size": 768,
+      "vae": [
+        "15",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "fps": 24,
+      "images": [
+        "12",
+        0
+      ]
+    }
+  },
+  "14": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "codec": "h264",
+      "filename_prefix": "ltx23-distilled-dynamic-lora-smoke",
+      "format": "mp4",
+      "video": [
+        "13",
+        0
+      ]
+    }
+  },
+  "15": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "full_encoder_small_decoder.safetensors"
+    }
+  },
+    "2": {
+        "class_type": "LTXAVTextEncoderLoader",
+        "inputs": {
+            "ckpt_name": "ltx-2.3-22b-distilled-fp8.safetensors",
+            "device": "default",
+            "text_encoder": "gemma_3_12B_it_fp4_mixed.safetensors"
+        }
+    },
+  "20": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "lora_name": "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+      "model": [
+        "1",
+        0
+      ],
+      "strength_model": 0.5
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "A 3 second smoke test video of a tiny robot waving beside a glowing sign that reads MODEL OK, gentle camera push, stable composition."
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "low quality, distorted, flicker, bad motion, blurry"
+    }
+  },
+  "5": {
+    "class_type": "LTXVConditioning",
+    "inputs": {
+      "frame_rate": 24,
+      "negative": [
+        "4",
+        0
+      ],
+      "positive": [
+        "3",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "EmptyLTXVLatentVideo",
+    "inputs": {
+      "batch_size": 1,
+      "height": 512,
+      "length": 73,
+      "width": 768
+    }
+  },
+  "7": {
+    "class_type": "BasicGuider",
+    "inputs": {
+      "conditioning": [
+        "5",
+        0
+      ],
+      "model": [
+        "20",
+        0
+      ]
+    }
+  },
+  "8": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 1006
+    }
+  },
+  "9": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler_cfg_pp"
+    }
+  }
+}

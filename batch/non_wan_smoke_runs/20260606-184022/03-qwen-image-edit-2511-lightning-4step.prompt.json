@@ -1,0 +1,145 @@
+{
+  "client_id": "non-wan-smoke-campaign",
+  "prompt": {
+    "1": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "reference_input.png"
+      }
+    },
+    "10": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "9",
+          0
+        ],
+        "vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "11": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "filename_prefix": "non-wan-smoke/20260606-184022/stage1/03-qwen-image-edit-2511-lightning-4step",
+        "images": [
+          "10",
+          0
+        ]
+      }
+    },
+    "2": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "qwen_image_edit_2511_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "20": {
+      "class_type": "LoraLoaderModelOnly",
+      "inputs": {
+        "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+        "model": [
+          "2",
+          0
+        ],
+        "strength_model": 1
+      }
+    },
+    "3": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "20",
+          0
+        ],
+        "shift": 3.1
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "device": "default",
+        "type": "qwen_image"
+      }
+    },
+    "6": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "5",
+          0
+        ],
+        "image1": [
+          "1",
+          0
+        ],
+        "prompt": "Add a small label reading MODEL OK while preserving the original image composition.",
+        "vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "5",
+          0
+        ],
+        "text": "low quality, blurry, distorted, broken text, artifacts"
+      }
+    },
+    "8": {
+      "class_type": "VAEEncode",
+      "inputs": {
+        "pixels": [
+          "1",
+          0
+        ],
+        "vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "KSampler",
+      "inputs": {
+        "cfg": 4,
+        "denoise": 1,
+        "latent_image": [
+          "8",
+          0
+        ],
+        "model": [
+          "3",
+          0
+        ],
+        "negative": [
+          "7",
+          0
+        ],
+        "positive": [
+          "6",
+          0
+        ],
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "seed": 1008,
+        "steps": 20
+      }
+    }
+  },
+  "prompt_id": "non-wan-smoke-20260606-184022-03"
+}

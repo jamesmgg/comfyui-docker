@@ -1,0 +1,63 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "reference_input.png"
+    }
+  },
+  "2": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        1
+      ],
+      "text": "main subject"
+    }
+  },
+  "4": {
+    "class_type": "SAM3_Detect",
+    "inputs": {
+      "conditioning": [
+        "3",
+        0
+      ],
+      "image": [
+        "1",
+        0
+      ],
+      "individual_masks": false,
+      "model": [
+        "2",
+        0
+      ],
+      "refine_iterations": 2,
+      "threshold": 0.5
+    }
+  },
+  "5": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "sam3-segmentation-smoke",
+      "images": [
+        "6",
+        0
+      ]
+    }
+  },
+  "6": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "4",
+        0
+      ]
+    }
+  }
+}

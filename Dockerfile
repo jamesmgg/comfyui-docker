@@ -3,6 +3,8 @@ FROM ubuntu:24.04
 ARG COMFYUI_TARBALL_URL=https://github.com/comfyanonymous/ComfyUI/archive/refs/heads/master.tar.gz
 ARG MULTIGPU_REPO=https://github.com/pollockjj/ComfyUI-MultiGPU.git
 ARG MULTIGPU_COMMIT=b51c99a525e9607e43545ee2a8b7694c74a4775a
+ARG GGUF_REPO=https://github.com/city96/ComfyUI-GGUF.git
+ARG GGUF_COMMIT=main
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -52,6 +54,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN git clone "$MULTIGPU_REPO" "$COMFYUI_PATH/custom_nodes/ComfyUI-MultiGPU" \
     && git -C "$COMFYUI_PATH/custom_nodes/ComfyUI-MultiGPU" checkout "$MULTIGPU_COMMIT" \
     && rm -rf "$COMFYUI_PATH/custom_nodes/ComfyUI-MultiGPU/.git"
+
+RUN git clone "$GGUF_REPO" "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF" \
+    && git -C "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF" checkout "$GGUF_COMMIT" \
+    && "$VENV_PATH/bin/python" -m pip install -r "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/requirements.txt" \
+    && rm -rf "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/.git"
 
 COPY scripts/entrypoint.sh /usr/local/bin/comfyui-entrypoint
 RUN chmod +x /usr/local/bin/comfyui-entrypoint

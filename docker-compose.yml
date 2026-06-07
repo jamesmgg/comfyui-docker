@@ -15,7 +15,7 @@ services:
       CUDA_VISIBLE_DEVICES: "0"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --reserve-vram 1.0 --preview-method none --enable-manager --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --reserve-vram 1.0 --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/gpu0:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
@@ -34,6 +34,7 @@ services:
       - ./models/style_models:/workspace/ComfyUI/models/style_models
       - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
       - ./models/configs:/workspace/ComfyUI/models/configs
+      - ./custom_nodes:/workspace/ComfyUI/custom_nodes
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/gpu0:/workspace/ComfyUI/output
       - ./temp/gpu0:/workspace/ComfyUI/temp
@@ -57,7 +58,7 @@ services:
       CUDA_VISIBLE_DEVICES: "1"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8189 --reserve-vram 1.0 --preview-method none --enable-manager --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8189 --reserve-vram 1.0 --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/gpu1:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
@@ -76,6 +77,7 @@ services:
       - ./models/style_models:/workspace/ComfyUI/models/style_models
       - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
       - ./models/configs:/workspace/ComfyUI/models/configs
+      - ./custom_nodes:/workspace/ComfyUI/custom_nodes
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/gpu1:/workspace/ComfyUI/output
       - ./temp/gpu1:/workspace/ComfyUI/temp
@@ -98,7 +100,7 @@ services:
       CUDA_VISIBLE_DEVICES: "0,1"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8190 --cuda-device 0,1 --default-device 0 --reserve-vram 1.0 --preview-method none --enable-manager --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8190 --cuda-device 0,1 --default-device 0 --reserve-vram 1.0 --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/sharded:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
@@ -117,6 +119,7 @@ services:
       - ./models/style_models:/workspace/ComfyUI/models/style_models
       - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
       - ./models/configs:/workspace/ComfyUI/models/configs
+      - ./custom_nodes:/workspace/ComfyUI/custom_nodes
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/sharded:/workspace/ComfyUI/output
       - ./temp/sharded:/workspace/ComfyUI/temp
