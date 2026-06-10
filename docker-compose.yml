@@ -15,7 +15,8 @@ services:
       CUDA_VISIBLE_DEVICES: "0"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --reserve-vram 1.0 --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+      # RTX 4090 (Ada, sm_89): fp8_matrix_mult needs FP8 tensor cores, do not copy to the 3090 worker
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --reserve-vram 1.0 --fast fp16_accumulation fp8_matrix_mult --use-sage-attention --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/gpu0:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
@@ -38,6 +39,12 @@ services:
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/gpu0:/workspace/ComfyUI/output
       - ./temp/gpu0:/workspace/ComfyUI/temp
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8188/system_stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
     tty: true
     stdin_open: true
     working_dir: /workspace/ComfyUI
@@ -58,7 +65,8 @@ services:
       CUDA_VISIBLE_DEVICES: "1"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8189 --reserve-vram 1.0 --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+      # RTX 3090 (Ampere, sm_86): no FP8 hardware, fp16_accumulation only
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8189 --reserve-vram 1.0 --fast fp16_accumulation --use-sage-attention --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/gpu1:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
@@ -81,6 +89,12 @@ services:
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/gpu1:/workspace/ComfyUI/output
       - ./temp/gpu1:/workspace/ComfyUI/temp
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8189/system_stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
     tty: true
     stdin_open: true
     working_dir: /workspace/ComfyUI
@@ -100,7 +114,8 @@ services:
       CUDA_VISIBLE_DEVICES: "0,1"
       NVIDIA_DRIVER_CAPABILITIES: compute,utility
       LD_LIBRARY_PATH: /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-      COMFYUI_ARGS: --listen 0.0.0.0 --port 8190 --cuda-device 0,1 --default-device 0 --reserve-vram 1.0 --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
+      # Spans both GPUs: no fp8_matrix_mult because ops may land on the 3090 (sm_86)
+      COMFYUI_ARGS: --listen 0.0.0.0 --port 8190 --cuda-device 0,1 --default-device 0 --reserve-vram 1.0 --fast fp16_accumulation --use-sage-attention --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/sharded:/workspace/ComfyUI/user
       - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
@@ -123,6 +138,12 @@ services:
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/sharded:/workspace/ComfyUI/output
       - ./temp/sharded:/workspace/ComfyUI/temp
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8190/system_stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
     tty: true
     stdin_open: true
     working_dir: /workspace/ComfyUI
