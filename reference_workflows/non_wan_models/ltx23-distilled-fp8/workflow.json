@@ -1,9 +1,8 @@
 {
   "1": {
-    "class_type": "UNETLoader",
+    "class_type": "CheckpointLoaderSimple",
     "inputs": {
-      "unet_name": "ltx-2.3-22b-distilled-fp8.safetensors",
-      "weight_dtype": "default"
+      "ckpt_name": "ltx-2.3-22b-distilled-fp8.safetensors"
     }
   },
   "10": {
@@ -55,8 +54,8 @@
       "temporal_size": 4096,
       "tile_size": 768,
       "vae": [
-        "15",
-        0
+        "1",
+        2
       ]
     }
   },
@@ -82,20 +81,14 @@
       ]
     }
   },
-  "15": {
-    "class_type": "VAELoader",
+  "2": {
+    "class_type": "LTXAVTextEncoderLoader",
     "inputs": {
-      "vae_name": "full_encoder_small_decoder.safetensors"
+      "ckpt_name": "ltx-2.3-22b-distilled-fp8.safetensors",
+      "device": "default",
+      "text_encoder": "gemma_3_12B_it_fp4_mixed.safetensors"
     }
   },
-    "2": {
-        "class_type": "LTXAVTextEncoderLoader",
-        "inputs": {
-            "ckpt_name": "ltx-2.3-22b-distilled-fp8.safetensors",
-            "device": "default",
-            "text_encoder": "gemma_3_12B_it_fp4_mixed.safetensors"
-        }
-    },
   "3": {
     "class_type": "CLIPTextEncode",
     "inputs": {

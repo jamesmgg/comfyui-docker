@@ -18,6 +18,7 @@ Writes batch/recipe_smoke_runs/<run_id>/{REPORT.md,results.json}.
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import sys
 import time
@@ -26,6 +27,8 @@ import urllib.request
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+
+print = functools.partial(print, flush=True)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SAVE_CLASSES = {"SaveImage", "SaveVideo", "SaveWEBM", "SaveAudio", "SaveAudioMP3"}
@@ -76,11 +79,30 @@ def submit(worker: Worker, recipe_dir: Path, workflow: dict) -> dict:
             "worker": worker.base_url, "started": time.time()}
 
 
+def prompt_in_queue(worker: Worker, prompt_id: str) -> bool:
+    queue = get_json(f"{worker.base_url}/queue")
+    for section in ("queue_running", "queue_pending"):
+        for item in queue.get(section, []):
+            if len(item) > 1 and item[1] == prompt_id:
+                return True
+    return False
+
+
 def check_history(worker: Worker, state: dict) -> dict | None:
     """Return a final result dict once the prompt finishes, else None."""
     history = get_json(f"{worker.base_url}/history/{state['prompt_id']}")
     entry = history.get(state["prompt_id"])
     if not entry:
+        # A prompt absent from both history and queue for a sustained period
+        # was lost (worker restart) and will never complete.
+        if time.time() - state["started"] > 90 and not prompt_in_queue(worker, state["prompt_id"]):
+            state.setdefault("lost_since", time.time())
+            if time.time() - state["lost_since"] > 60:
+                return {"name": state["name"], "ok": False, "stage": "lost",
+                        "elapsed_s": round(time.time() - state["started"], 1),
+                        "error": "prompt vanished from queue and history (worker restart?)"}
+        else:
+            state.pop("lost_since", None)
         return None
     status = entry.get("status") or {}
     elapsed = round(time.time() - state["started"], 1)
@@ -114,6 +136,8 @@ def main() -> int:
                         help="worker base url and its output dir (repeatable)")
     parser.add_argument("--run-id", default=datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S"))
     parser.add_argument("--timeout", type=int, default=1800, help="per-recipe timeout in seconds")
+    parser.add_argument("--serial", action="store_true",
+                        help="one prompt in flight globally (avoids concurrent model-load RAM spikes)")
     args = parser.parse_args()
 
     worker_specs = args.workers or [
@@ -139,10 +163,14 @@ def main() -> int:
     run_prefix = f"recipes-smoke/{args.run_id}"
     queue = list(recipe_dirs)
     results: list[dict] = []
-    print(f"run {args.run_id}: {len(queue)} recipes across {len(workers)} workers")
+    retried: set[str] = set()
+    print(f"run {args.run_id}: {len(queue)} recipes across {len(workers)} workers"
+          + (" (serial)" if args.serial else ""))
 
     while queue or any(w.current for w in workers):
         for worker in workers:
+            if args.serial and any(w.current for w in workers):
+                break
             if worker.current is None and queue:
                 recipe_dir = queue.pop(0)
                 workflow = load_recipe(recipe_dir, run_prefix)
@@ -167,8 +195,13 @@ def main() -> int:
                          "elapsed_s": round(time.time() - state["started"], 1),
                          "error": f"no completion after {args.timeout}s"}
             if final is not None:
-                results.append(final)
                 worker.current = None
+                if not final["ok"] and final["stage"] == "lost" and final["name"] not in retried:
+                    retried.add(final["name"])
+                    queue.insert(0, next(d for d in recipe_dirs if d.name == final["name"]))
+                    print(f"  LOST {final['name']} — resubmitting once")
+                    continue
+                results.append(final)
                 print(f"  {'PASS' if final['ok'] else 'FAIL(' + final['stage'] + ')'} "
                       f"{final['name']} in {final.get('elapsed_s', '?')}s")
         time.sleep(5)
