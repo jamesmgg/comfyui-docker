@@ -46,10 +46,22 @@ RUN mkdir -p "$COMFYUI_PATH" \
     && curl -L "$COMFYUI_TARBALL_URL" | tar -xz --strip-components=1 -C "$COMFYUI_PATH"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    "$VENV_PATH/bin/python" -m pip install -r "$COMFYUI_PATH/requirements.txt"
+    "$VENV_PATH/bin/python" -m pip install \
+        -c /tmp/pytorch-cu130.txt \
+        -r "$COMFYUI_PATH/requirements.txt"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    "$VENV_PATH/bin/python" -m pip install -r "$COMFYUI_PATH/manager_requirements.txt"
+    "$VENV_PATH/bin/python" -m pip install \
+        -c /tmp/pytorch-cu130.txt \
+        -r "$COMFYUI_PATH/manager_requirements.txt"
+
+# Triton-based attention kernel for --use-sage-attention (sm_80+; covers 3090/4090).
+# Triton ships inside the cu130 torch wheel as pytorch-triton.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    "$VENV_PATH/bin/python" -m pip install \
+        -c /tmp/pytorch-cu130.txt \
+        sageattention==1.0.6 \
+    && "$VENV_PATH/bin/python" -c "import sageattention"
 
 RUN git clone "$MULTIGPU_REPO" "$COMFYUI_PATH/custom_nodes/ComfyUI-MultiGPU" \
     && git -C "$COMFYUI_PATH/custom_nodes/ComfyUI-MultiGPU" checkout "$MULTIGPU_COMMIT" \
@@ -57,7 +69,7 @@ RUN git clone "$MULTIGPU_REPO" "$COMFYUI_PATH/custom_nodes/ComfyUI-MultiGPU" \
 
 RUN git clone "$GGUF_REPO" "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF" \
     && git -C "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF" checkout "$GGUF_COMMIT" \
-    && "$VENV_PATH/bin/python" -m pip install -r "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/requirements.txt" \
+    && "$VENV_PATH/bin/python" -m pip install -c /tmp/pytorch-cu130.txt -r "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/requirements.txt" \
     && rm -rf "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/.git"
 
 COPY scripts/entrypoint.sh /usr/local/bin/comfyui-entrypoint

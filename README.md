@@ -16,6 +16,10 @@ The image installs:
 - ComfyUI from `COMFYUI_TARBALL_URL`
 - `comfyui_manager==4.2.1` through ComfyUI's `manager_requirements.txt`
 - `ComfyUI-MultiGPU` at `b51c99a525e9607e43545ee2a8b7694c74a4775a`
+- `ComfyUI-GGUF` with its requirements
+- `sageattention==1.0.6` (Triton attention kernels for `--use-sage-attention`)
+
+All pip installs are constrained by `constraints/pytorch-cu130.txt` so dependencies cannot replace the pinned CUDA 13 torch wheels.
 
 ## Start
 
@@ -30,13 +34,21 @@ http://localhost:8188  # GPU 0 worker
 http://localhost:8189  # GPU 1 worker
 ```
 
-Each worker is pinned with both Docker GPU device requests and `CUDA_VISIBLE_DEVICES`. The single-GPU workers intentionally do not pass `--cuda-device` or `--default-device`, because ComfyUI rewrites `CUDA_VISIBLE_DEVICES` from those flags. Inside each worker, PyTorch remaps the selected physical GPU to CUDA device `0`, so both workers launch with:
+Each worker is pinned with both Docker GPU device requests and `CUDA_VISIBLE_DEVICES`. The single-GPU workers intentionally do not pass `--cuda-device` or `--default-device`, because ComfyUI rewrites `CUDA_VISIBLE_DEVICES` from those flags. Inside each worker, PyTorch remaps the selected physical GPU to CUDA device `0`. Both workers launch with `--reserve-vram 1.0 --preview-method none` plus per-GPU performance flags. Override them by setting `COMFYUI_ARGS` in `docker-compose.yml`.
 
-```text
---reserve-vram 1.0 --preview-method none
-```
+## Per-GPU performance flags
 
-Override them by setting `COMFYUI_ARGS` in `docker-compose.yml`.
+The two workers are tuned for the specific cards behind them (GPU0 = RTX 4090, GPU1 = RTX 3090):
+
+- GPU0 (4090, Ada/sm_89): `--fast fp16_accumulation fp8_matrix_mult --use-sage-attention`. `fp8_matrix_mult` uses the 4090's FP8 tensor cores for fp8_scaled models — do not copy it to the 3090 worker, which has no FP8 hardware.
+- GPU1 (3090, Ampere/sm_86): `--fast fp16_accumulation --use-sage-attention`.
+- Sharded worker: `--fast fp16_accumulation --use-sage-attention` only, since its ops can land on either GPU.
+
+`--use-sage-attention` uses the `sageattention` Triton kernels baked into the image. Both `--fast` features and sage attention are quality-affecting optimizations: if a worker's outputs degrade, remove the offending flag from that worker's `COMFYUI_ARGS` and recreate it. See `FINDINGS.md` for the full audit and rollback notes.
+
+## Healthchecks
+
+Each service has a `curl /system_stats` healthcheck (30s interval, 120s start period for model loads). A wedged worker shows as `unhealthy` in `docker ps`. Docker does not auto-restart unhealthy containers — `restart: unless-stopped` only fires on process exit — so treat `unhealthy` as a signal to recreate the worker.
 
 ## Sharded Worker
 
