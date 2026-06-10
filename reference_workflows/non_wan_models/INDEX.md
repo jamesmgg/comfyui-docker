@@ -40,3 +40,12 @@ Notes:
 - LTX 2.3 spatial upscaler is not a standalone smoke-test graph here; it is a latent upscale model used as a second-stage component after a base LTX generation.
 - GGUF FLUX.2 *dev* references use the local safetensors Mistral FLUX.2 text encoder because the GGUF text-encoder companion files from the MultiGPU examples were not present in the model inventory.
 - FLUX.2 Klein models pair with Qwen 3 text encoders, not Mistral (per the bundled ComfyUI templates): Klein 4B → `qwen_3_4b.safetensors`, Klein 9B → `qwen_3_8b_fp8mixed.safetensors` + `full_encoder_small_decoder.safetensors` VAE. Using the Mistral encoder fails at the sampler with a 15360→7680 conditioning shape mismatch.
+
+Reference-to-image (FLUX.2 Dev + ReferenceLatent — see recipe commit note):
+
+- `flux2-dev-image-edit` generates a NEW image guided by one reference (`reference_input.png`).
+- `flux2-dev-ref2img-2ref` / `flux2-dev-ref2img-3ref` chain ReferenceLatent for multiple
+  simultaneous references (LoadImage nodes 20/21/22, independently overridable per launch).
+- BLOCKED on workers running `--use-sage-attention`: every ReferenceLatent execution
+  crashes the worker (t2i/img2img on the same workers are fine). Run these only on a
+  worker without sage attention.
