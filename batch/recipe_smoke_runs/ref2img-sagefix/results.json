@@ -1,0 +1,16 @@
+[
+  {
+    "name": "flux2-dev-ref2img-2ref",
+    "ok": true,
+    "stage": "done",
+    "elapsed_s": 775.1,
+    "worker": "http://host.docker.internal:8189",
+    "files": [
+      {
+        "path": "outputs/gpu1/recipes-smoke/ref2img-sagefix/flux2-dev-ref2img-2ref_00001_.png",
+        "exists": true,
+        "bytes": 2442675
+      }
+    ]
+  }
+]
