@@ -1,0 +1,334 @@
+{
+  "1": {
+    "class_type": "WanVideoVAELoaderMultiGPU",
+    "inputs": {
+      "model_name": "Wan2_2_VAE_bf16.safetensors",
+      "precision": "bf16",
+      "load_device": "cuda:0"
+    },
+    "_meta": {
+      "title": "WanVideo VAE"
+    }
+  },
+  "2": {
+    "class_type": "WanVideoExtraModelSelect",
+    "inputs": {
+      "extra_model": "WanVideo/Ovi/Wan2_2_Ovi_Audio_fp8_e4m3fn_scaled_KJ.safetensors"
+    },
+    "_meta": {
+      "title": "Ovi Audio Model Path"
+    }
+  },
+  "3": {
+    "class_type": "WanVideoBlockSwapMultiGPU",
+    "inputs": {
+      "blocks_to_swap": 15,
+      "offload_img_emb": false,
+      "offload_txt_emb": false,
+      "use_non_blocking": true,
+      "prefetch_blocks": 1,
+      "swap_device": "cpu"
+    },
+    "_meta": {
+      "title": "Block Swap (GPU→CPU)"
+    }
+  },
+  "4": {
+    "class_type": "WanVideoModelLoaderMultiGPU",
+    "inputs": {
+      "model": "WanVideo/Ovi/Wan2_2_Ovi_Video_fp8_e4m3fn_scaled_KJ.safetensors",
+      "base_precision": "bf16",
+      "quantization": "fp8_e4m3fn_scaled",
+      "load_device": "offload_device",
+      "compute_device": "cuda:0",
+      "attention_mode": "sdpa",
+      "block_swap_args": [
+        "3",
+        0
+      ],
+      "extra_model": [
+        "2",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Ovi Video Model"
+    }
+  },
+  "5": {
+    "class_type": "WanVideoTextEncodeCachedMultiGPU",
+    "inputs": {
+      "model_name": "umt5-xxl-enc-fp8_e4m3fn.safetensors",
+      "precision": "bf16",
+      "positive_prompt": "A person is speaking sincerely: <S>I am happy to be here today.<E>. <AUDCAP>Clear confident voice speaking naturally.<ENDAUDCAP>",
+      "negative_prompt": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走",
+      "quantization": "fp8_e4m3fn",
+      "use_disk_cache": false,
+      "load_device": "cuda:0"
+    },
+    "_meta": {
+      "title": "Text Encode (video + speech)"
+    }
+  },
+  "6": {
+    "class_type": "WanVideoTextEncodeCachedMultiGPU",
+    "inputs": {
+      "model_name": "umt5-xxl-enc-fp8_e4m3fn.safetensors",
+      "precision": "bf16",
+      "positive_prompt": "",
+      "negative_prompt": "robotic, muffled, echo, distorted",
+      "quantization": "fp8_e4m3fn",
+      "use_disk_cache": false,
+      "load_device": "cuda:0"
+    },
+    "_meta": {
+      "title": "Audio Negative Encode"
+    }
+  },
+  "7": {
+    "class_type": "WanVideoOviCFG",
+    "inputs": {
+      "original_text_embeds": [
+        "5",
+        0
+      ],
+      "ovi_audio_cfg": 3.0,
+      "ovi_negative_text_embeds": [
+        "6",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "Ovi Audio CFG"
+    }
+  },
+  "8": {
+    "class_type": "OviMMAudioVAELoader",
+    "inputs": {
+      "vae": "mmaudio_vae_16k_fp32.safetensors",
+      "vocoder": "mmaudio_vocoder_bigvgan_best_netG_fp32.safetensors",
+      "precision": "fp32"
+    },
+    "_meta": {
+      "title": "MMAudio VAE"
+    }
+  },
+  "9": {
+    "class_type": "WanVideoEmptyMMAudioLatents",
+    "inputs": {
+      "length": 157
+    },
+    "_meta": {
+      "title": "Audio Latent Init (157 frames)"
+    }
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "example.png",
+      "upload": "image"
+    },
+    "_meta": {
+      "title": "image_1 — start frame"
+    }
+  },
+  "11": {
+    "class_type": "ImageResizeKJv2",
+    "inputs": {
+      "image": [
+        "10",
+        0
+      ],
+      "width": 704,
+      "height": 704,
+      "upscale_method": "lanczos",
+      "keep_proportion": "crop",
+      "pad_color": "0, 0, 0",
+      "crop_position": "center",
+      "divisible_by": 32,
+      "device": "cpu"
+    },
+    "_meta": {
+      "title": "Resize to 704×704"
+    }
+  },
+  "12": {
+    "class_type": "WanVideoEncodeMultiGPU",
+    "inputs": {
+      "vae": [
+        "1",
+        0
+      ],
+      "load_device": [
+        "1",
+        1
+      ],
+      "image": [
+        "11",
+        0
+      ],
+      "enable_vae_tiling": false,
+      "tile_x": 272,
+      "tile_y": 272,
+      "tile_stride_x": 144,
+      "tile_stride_y": 128
+    },
+    "_meta": {
+      "title": "Encode Start Frame"
+    }
+  },
+  "13": {
+    "class_type": "WanVideoEmptyEmbeds",
+    "inputs": {
+      "width": 704,
+      "height": 704,
+      "num_frames": 121,
+      "extra_latents": [
+        "12",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Image Embeds (I2V 704×704 121f)"
+    }
+  },
+  "14": {
+    "class_type": "WanVideoEasyCache",
+    "inputs": {
+      "easycache_thresh": 0.015,
+      "start_step": 10,
+      "end_step": -1,
+      "cache_device": "offload_device"
+    },
+    "_meta": {
+      "title": "EasyCache"
+    }
+  },
+  "15": {
+    "class_type": "WanVideoSLG",
+    "inputs": {
+      "blocks": "11",
+      "start_percent": 0.0,
+      "end_percent": 1.0
+    },
+    "_meta": {
+      "title": "Skip Layer Guidance"
+    }
+  },
+  "16": {
+    "class_type": "WanVideoSamplerMultiGPU",
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "compute_device": [
+        "4",
+        1
+      ],
+      "image_embeds": [
+        "13",
+        0
+      ],
+      "steps": 50,
+      "cfg": 4.0,
+      "shift": 5.0,
+      "seed": 42,
+      "force_offload": true,
+      "scheduler": "unipc",
+      "riflex_freq_index": 0,
+      "text_embeds": [
+        "7",
+        0
+      ],
+      "samples": [
+        "9",
+        0
+      ],
+      "cache_args": [
+        "14",
+        0
+      ],
+      "slg_args": [
+        "15",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Ovi Sampler (50 steps)"
+    }
+  },
+  "17": {
+    "class_type": "WanVideoDecodeMultiGPU",
+    "inputs": {
+      "vae": [
+        "1",
+        0
+      ],
+      "load_device": [
+        "1",
+        1
+      ],
+      "samples": [
+        "16",
+        0
+      ],
+      "enable_vae_tiling": false,
+      "tile_x": 272,
+      "tile_y": 272,
+      "tile_stride_x": 144,
+      "tile_stride_y": 128
+    },
+    "_meta": {
+      "title": "Decode Video"
+    }
+  },
+  "18": {
+    "class_type": "WanVideoDecodeOviAudio",
+    "inputs": {
+      "mmaudio_vae": [
+        "8",
+        0
+      ],
+      "samples": [
+        "16",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Decode Ovi Audio"
+    }
+  },
+  "19": {
+    "class_type": "CreateVideo",
+    "inputs": {
+      "images": [
+        "17",
+        0
+      ],
+      "fps": 24.0,
+      "audio": [
+        "18",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Create Video (24fps + audio)"
+    }
+  },
+  "20": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "19",
+        0
+      ],
+      "filename_prefix": "WanVideo_Ovi",
+      "format": "mp4",
+      "codec": "h264"
+    },
+    "_meta": {
+      "title": "Save MP4"
+    }
+  }
+}
