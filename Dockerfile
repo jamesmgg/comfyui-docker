@@ -72,6 +72,20 @@ RUN git clone "$GGUF_REPO" "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF" \
     && "$VENV_PATH/bin/python" -m pip install -c /tmp/pytorch-cu130.txt -r "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/requirements.txt" \
     && rm -rf "$COMFYUI_PATH/custom_nodes/ComfyUI-GGUF/.git"
 
+# Custom-node runtime dependencies (volume-mounted nodes; not baked in but their deps must be)
+# WanVideoWrapper: accelerate/diffusers/peft needed at import time
+# VideoHelperSuite: opencv (cv2) + imageio-ffmpeg needed at import time / video mux
+RUN --mount=type=cache,target=/root/.cache/pip \
+    "$VENV_PATH/bin/python" -m pip install \
+        -c /tmp/pytorch-cu130.txt \
+        "accelerate>=1.2.1" \
+        "diffusers>=0.33.0" \
+        "peft>=0.17.0" \
+        "ftfy" \
+        "pyloudnorm" \
+        "opencv-python-headless" \
+        "imageio-ffmpeg"
+
 COPY scripts/entrypoint.sh /usr/local/bin/comfyui-entrypoint
 RUN chmod +x /usr/local/bin/comfyui-entrypoint
 
