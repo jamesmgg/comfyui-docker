@@ -12,6 +12,10 @@ outputs/*
 # Runtime state written by ComfyUI and ComfyUI Manager.
 user/
 
+# Generated batch run-state: output metadata index + transient batch manifests.
+batch/output_metadata_index.json
+batch/*manifest.json
+
 # Custom nodes are installed and managed at runtime.
 custom_nodes/*
 !custom_nodes/*.example

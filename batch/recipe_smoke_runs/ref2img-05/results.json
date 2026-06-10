@@ -1,0 +1,9 @@
+[
+  {
+    "name": "flux2-dev-image-edit",
+    "ok": false,
+    "stage": "lost",
+    "elapsed_s": 436.3,
+    "error": "prompt vanished from queue and history (worker restart?)"
+  }
+]
