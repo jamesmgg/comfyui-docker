@@ -133,14 +133,19 @@
     }
   },
   "7": {
-    "class_type": "BasicGuider",
+    "class_type": "CFGGuider",
     "inputs": {
-      "conditioning": [
-        "5",
-        0
-      ],
+      "cfg": 1.0,
       "model": [
         "1",
+        0
+      ],
+      "negative": [
+        "5",
+        1
+      ],
+      "positive": [
+        "5",
         0
       ]
     }

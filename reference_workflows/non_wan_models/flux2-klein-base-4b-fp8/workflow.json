@@ -31,26 +31,27 @@
     }
   },
   "17": {
-    "class_type": "BasicScheduler",
+    "class_type": "Flux2Scheduler",
     "inputs": {
-      "denoise": 1,
-      "model": [
-        "30",
-        0
-      ],
-      "scheduler": "simple",
-      "steps": 20
+      "height": 832,
+      "steps": 20,
+      "width": 1248
     }
   },
   "22": {
-    "class_type": "BasicGuider",
+    "class_type": "CFGGuider",
     "inputs": {
-      "conditioning": [
-        "26",
+      "cfg": 5.0,
+      "model": [
+        "38",
         0
       ],
-      "model": [
-        "30",
+      "negative": [
+        "7",
+        0
+      ],
+      "positive": [
+        "6",
         0
       ]
     }
@@ -61,34 +62,11 @@
       "noise_seed": 1004
     }
   },
-  "26": {
-    "class_type": "FluxGuidance",
-    "inputs": {
-      "conditioning": [
-        "6",
-        0
-      ],
-      "guidance": 4
-    }
-  },
   "27": {
     "class_type": "EmptyFlux2LatentImage",
     "inputs": {
       "batch_size": 1,
       "height": 832,
-      "width": 1248
-    }
-  },
-  "30": {
-    "class_type": "ModelSamplingFlux",
-    "inputs": {
-      "base_shift": 0.5,
-      "height": 832,
-      "max_shift": 1.15,
-      "model": [
-        "38",
-        0
-      ],
       "width": 1248
     }
   },
@@ -121,6 +99,16 @@
         0
       ],
       "text": "Photorealistic smoke test: a precision-machined badge reading MODEL OK on carbon fiber, shallow depth of field, accurate engraved text"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "39",
+        0
+      ],
+      "text": "blurry, low quality, distorted, garbled text"
     }
   },
   "8": {

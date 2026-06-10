@@ -1,0 +1,72 @@
+[
+  {
+    "name": "flux2-klein-base-4b-fp8",
+    "ok": true,
+    "stage": "done",
+    "elapsed_s": 100.6,
+    "worker": "http://host.docker.internal:8188",
+    "files": [
+      {
+        "path": "outputs/gpu0/recipes-smoke/recipes-ingest-02/flux2-klein-base-4b-fp8_00001_.png",
+        "exists": true,
+        "bytes": 1647789
+      }
+    ]
+  },
+  {
+    "name": "ltx23-distilled-fp8",
+    "ok": true,
+    "stage": "done",
+    "elapsed_s": 397.2,
+    "worker": "http://host.docker.internal:8189",
+    "files": [
+      {
+        "path": "outputs/gpu1/recipes-smoke/recipes-ingest-02/ltx23-distilled-fp8_00001_.mp4",
+        "exists": true,
+        "bytes": 205530
+      }
+    ]
+  },
+  {
+    "name": "ltx23-distilled-dynamic-lora",
+    "ok": true,
+    "stage": "done",
+    "elapsed_s": 346.8,
+    "worker": "http://host.docker.internal:8188",
+    "files": [
+      {
+        "path": "outputs/gpu0/recipes-smoke/recipes-ingest-02/ltx23-distilled-dynamic-lora_00001_.mp4",
+        "exists": true,
+        "bytes": 352769
+      }
+    ]
+  },
+  {
+    "name": "ltx23-transition-lora",
+    "ok": true,
+    "stage": "done",
+    "elapsed_s": 211.4,
+    "worker": "http://host.docker.internal:8188",
+    "files": [
+      {
+        "path": "outputs/gpu0/recipes-smoke/recipes-ingest-02/ltx23-transition-lora_00001_.mp4",
+        "exists": true,
+        "bytes": 209541
+      }
+    ]
+  },
+  {
+    "name": "ltx23-dev-fp8",
+    "ok": true,
+    "stage": "done",
+    "elapsed_s": 307.1,
+    "worker": "http://host.docker.internal:8189",
+    "files": [
+      {
+        "path": "outputs/gpu1/recipes-smoke/recipes-ingest-02/ltx23-dev-fp8_00001_.mp4",
+        "exists": true,
+        "bytes": 233715
+      }
+    ]
+  }
+]
