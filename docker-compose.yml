@@ -19,23 +19,23 @@ services:
       COMFYUI_ARGS: --listen 0.0.0.0 --port 8188 --reserve-vram 1.0 --fast fp16_accumulation fp8_matrix_mult --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/gpu0:/workspace/ComfyUI/user
-      - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
-      - ./models/loras:/workspace/ComfyUI/models/loras
-      - ./models/controlnet:/workspace/ComfyUI/models/controlnet
-      - ./models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
-      - ./models/vae:/workspace/ComfyUI/models/vae
-      - ./models/vae_approx:/workspace/ComfyUI/models/vae_approx
-      - ./models/clip:/workspace/ComfyUI/models/clip
-      - ./models/clip_vision:/workspace/ComfyUI/models/clip_vision
-      - ./models/unet:/workspace/ComfyUI/models/unet
-      - ./models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
-      - ./models/diffusers:/workspace/ComfyUI/models/diffusers
-      - ./models/text_encoders:/workspace/ComfyUI/models/text_encoders
-      - ./models/embeddings:/workspace/ComfyUI/models/embeddings
-      - ./models/style_models:/workspace/ComfyUI/models/style_models
-      - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
-      - ./models/configs:/workspace/ComfyUI/models/configs
-      - ./models/mmaudio:/workspace/ComfyUI/models/mmaudio
+      - E:/AI-Models/comfyui-docker/models/checkpoints:/workspace/ComfyUI/models/checkpoints
+      - E:/AI-Models/comfyui-docker/models/loras:/workspace/ComfyUI/models/loras
+      - E:/AI-Models/comfyui-docker/models/controlnet:/workspace/ComfyUI/models/controlnet
+      - E:/AI-Models/comfyui-docker/models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
+      - E:/AI-Models/comfyui-docker/models/vae:/workspace/ComfyUI/models/vae
+      - E:/AI-Models/comfyui-docker/models/vae_approx:/workspace/ComfyUI/models/vae_approx
+      - E:/AI-Models/comfyui-docker/models/clip:/workspace/ComfyUI/models/clip
+      - E:/AI-Models/comfyui-docker/models/clip_vision:/workspace/ComfyUI/models/clip_vision
+      - E:/AI-Models/comfyui-docker/models/unet:/workspace/ComfyUI/models/unet
+      - E:/AI-Models/comfyui-docker/models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
+      - E:/AI-Models/comfyui-docker/models/diffusers:/workspace/ComfyUI/models/diffusers
+      - E:/AI-Models/comfyui-docker/models/text_encoders:/workspace/ComfyUI/models/text_encoders
+      - E:/AI-Models/comfyui-docker/models/embeddings:/workspace/ComfyUI/models/embeddings
+      - E:/AI-Models/comfyui-docker/models/style_models:/workspace/ComfyUI/models/style_models
+      - E:/AI-Models/comfyui-docker/models/upscale_models:/workspace/ComfyUI/models/upscale_models
+      - E:/AI-Models/comfyui-docker/models/configs:/workspace/ComfyUI/models/configs
+      - E:/AI-Models/comfyui-docker/models/mmaudio:/workspace/ComfyUI/models/mmaudio
       - ./custom_nodes:/workspace/ComfyUI/custom_nodes
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/gpu0:/workspace/ComfyUI/output
@@ -70,23 +70,23 @@ services:
       COMFYUI_ARGS: --listen 0.0.0.0 --port 8189 --reserve-vram 1.0 --fast fp16_accumulation --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/gpu1:/workspace/ComfyUI/user
-      - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
-      - ./models/loras:/workspace/ComfyUI/models/loras
-      - ./models/controlnet:/workspace/ComfyUI/models/controlnet
-      - ./models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
-      - ./models/vae:/workspace/ComfyUI/models/vae
-      - ./models/vae_approx:/workspace/ComfyUI/models/vae_approx
-      - ./models/clip:/workspace/ComfyUI/models/clip
-      - ./models/clip_vision:/workspace/ComfyUI/models/clip_vision
-      - ./models/unet:/workspace/ComfyUI/models/unet
-      - ./models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
-      - ./models/diffusers:/workspace/ComfyUI/models/diffusers
-      - ./models/text_encoders:/workspace/ComfyUI/models/text_encoders
-      - ./models/embeddings:/workspace/ComfyUI/models/embeddings
-      - ./models/style_models:/workspace/ComfyUI/models/style_models
-      - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
-      - ./models/configs:/workspace/ComfyUI/models/configs
-      - ./models/mmaudio:/workspace/ComfyUI/models/mmaudio
+      - E:/AI-Models/comfyui-docker/models/checkpoints:/workspace/ComfyUI/models/checkpoints
+      - E:/AI-Models/comfyui-docker/models/loras:/workspace/ComfyUI/models/loras
+      - E:/AI-Models/comfyui-docker/models/controlnet:/workspace/ComfyUI/models/controlnet
+      - E:/AI-Models/comfyui-docker/models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
+      - E:/AI-Models/comfyui-docker/models/vae:/workspace/ComfyUI/models/vae
+      - E:/AI-Models/comfyui-docker/models/vae_approx:/workspace/ComfyUI/models/vae_approx
+      - E:/AI-Models/comfyui-docker/models/clip:/workspace/ComfyUI/models/clip
+      - E:/AI-Models/comfyui-docker/models/clip_vision:/workspace/ComfyUI/models/clip_vision
+      - E:/AI-Models/comfyui-docker/models/unet:/workspace/ComfyUI/models/unet
+      - E:/AI-Models/comfyui-docker/models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
+      - E:/AI-Models/comfyui-docker/models/diffusers:/workspace/ComfyUI/models/diffusers
+      - E:/AI-Models/comfyui-docker/models/text_encoders:/workspace/ComfyUI/models/text_encoders
+      - E:/AI-Models/comfyui-docker/models/embeddings:/workspace/ComfyUI/models/embeddings
+      - E:/AI-Models/comfyui-docker/models/style_models:/workspace/ComfyUI/models/style_models
+      - E:/AI-Models/comfyui-docker/models/upscale_models:/workspace/ComfyUI/models/upscale_models
+      - E:/AI-Models/comfyui-docker/models/configs:/workspace/ComfyUI/models/configs
+      - E:/AI-Models/comfyui-docker/models/mmaudio:/workspace/ComfyUI/models/mmaudio
       - ./custom_nodes:/workspace/ComfyUI/custom_nodes
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/gpu1:/workspace/ComfyUI/output
@@ -120,23 +120,23 @@ services:
       COMFYUI_ARGS: --listen 0.0.0.0 --port 8190 --cuda-device 0,1 --default-device 0 --reserve-vram 1.0 --fast fp16_accumulation --preview-method none --enable-manager --enable-assets --input-directory /workspace/ComfyUI/input --output-directory /workspace/ComfyUI/output --temp-directory /workspace/ComfyUI/temp --user-directory /workspace/ComfyUI/user
     volumes:
       - ./user/sharded:/workspace/ComfyUI/user
-      - ./models/checkpoints:/workspace/ComfyUI/models/checkpoints
-      - ./models/loras:/workspace/ComfyUI/models/loras
-      - ./models/controlnet:/workspace/ComfyUI/models/controlnet
-      - ./models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
-      - ./models/vae:/workspace/ComfyUI/models/vae
-      - ./models/vae_approx:/workspace/ComfyUI/models/vae_approx
-      - ./models/clip:/workspace/ComfyUI/models/clip
-      - ./models/clip_vision:/workspace/ComfyUI/models/clip_vision
-      - ./models/unet:/workspace/ComfyUI/models/unet
-      - ./models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
-      - ./models/diffusers:/workspace/ComfyUI/models/diffusers
-      - ./models/text_encoders:/workspace/ComfyUI/models/text_encoders
-      - ./models/embeddings:/workspace/ComfyUI/models/embeddings
-      - ./models/style_models:/workspace/ComfyUI/models/style_models
-      - ./models/upscale_models:/workspace/ComfyUI/models/upscale_models
-      - ./models/configs:/workspace/ComfyUI/models/configs
-      - ./models/mmaudio:/workspace/ComfyUI/models/mmaudio
+      - E:/AI-Models/comfyui-docker/models/checkpoints:/workspace/ComfyUI/models/checkpoints
+      - E:/AI-Models/comfyui-docker/models/loras:/workspace/ComfyUI/models/loras
+      - E:/AI-Models/comfyui-docker/models/controlnet:/workspace/ComfyUI/models/controlnet
+      - E:/AI-Models/comfyui-docker/models/t2i_adapter:/workspace/ComfyUI/models/t2i_adapter
+      - E:/AI-Models/comfyui-docker/models/vae:/workspace/ComfyUI/models/vae
+      - E:/AI-Models/comfyui-docker/models/vae_approx:/workspace/ComfyUI/models/vae_approx
+      - E:/AI-Models/comfyui-docker/models/clip:/workspace/ComfyUI/models/clip
+      - E:/AI-Models/comfyui-docker/models/clip_vision:/workspace/ComfyUI/models/clip_vision
+      - E:/AI-Models/comfyui-docker/models/unet:/workspace/ComfyUI/models/unet
+      - E:/AI-Models/comfyui-docker/models/diffusion_models:/workspace/ComfyUI/models/diffusion_models
+      - E:/AI-Models/comfyui-docker/models/diffusers:/workspace/ComfyUI/models/diffusers
+      - E:/AI-Models/comfyui-docker/models/text_encoders:/workspace/ComfyUI/models/text_encoders
+      - E:/AI-Models/comfyui-docker/models/embeddings:/workspace/ComfyUI/models/embeddings
+      - E:/AI-Models/comfyui-docker/models/style_models:/workspace/ComfyUI/models/style_models
+      - E:/AI-Models/comfyui-docker/models/upscale_models:/workspace/ComfyUI/models/upscale_models
+      - E:/AI-Models/comfyui-docker/models/configs:/workspace/ComfyUI/models/configs
+      - E:/AI-Models/comfyui-docker/models/mmaudio:/workspace/ComfyUI/models/mmaudio
       - ./custom_nodes:/workspace/ComfyUI/custom_nodes
       - ./inputs:/workspace/ComfyUI/input
       - ./outputs/sharded:/workspace/ComfyUI/output
